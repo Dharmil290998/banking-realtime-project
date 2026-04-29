@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "AzureKeyVault",
 		"typeProperties": {
-			"baseUrl": "https://realtimedata.vault.azure.net/"
+			"baseUrl": "https://keyvaultretailproject.vault.azure.net/"
 		}
 	}
 }

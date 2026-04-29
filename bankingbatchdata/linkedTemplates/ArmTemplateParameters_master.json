@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "bankingbatchdata"
+		},
+		"AzureSqlDatabaseConn_password": {
+			"value": ""
+		},
+		"AzureDataLakeStorage_accountKey": {
+			"value": ""
+		},
+		"AzureKeyVault_properties_typeProperties_baseUrl": {
+			"value": "https://keyvaultretailproject.vault.azure.net/"
+		},
+		"AzureSqlDatabaseConn_properties_typeProperties_server": {
+			"value": "dnpserverdemo.database.windows.net"
+		},
+		"AzureSqlDatabaseConn_properties_typeProperties_database": {
+			"value": "dnpdatabase"
+		},
+		"AzureSqlDatabaseConn_properties_typeProperties_userName": {
+			"value": "dnpserver"
+		},
+		"AzureDataLakeStorage_properties_typeProperties_url": {
+			"value": "https://project1demo.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

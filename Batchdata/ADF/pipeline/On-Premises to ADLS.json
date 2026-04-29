@@ -1,0 +1,24 @@
+{
+	"name": "On-Premises to ADLS",
+	"properties": {
+		"activities": [
+			{
+				"name": "On-Premises to ADLS",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Data Ingestion",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"annotations": []
+	}
+}

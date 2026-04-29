@@ -277,6 +277,129 @@
 										"referenceName": "AzureSqlDatabaseConn",
 										"type": "LinkedServiceReference"
 									}
+								},
+								{
+									"name": "Sucess Logs",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "Copy data",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[banking].[USP_LOGDETAILS_ONPREMISES]",
+										"storedProcedureParameters": {
+											"COPYDURATION": {
+												"value": "@activity('Copy data').output.copyDuration",
+												"type": "Int64"
+											},
+											"ERRORMESSAGE": {
+												"value": null,
+												"type": "String"
+											},
+											"LOGTIME": {
+												"value": "@convertTimeZone(utcNow(),'UTC','Eastern Standard Time')",
+												"type": "DateTime"
+											},
+											"ROWCOPIED": {
+												"value": {
+													"value": "@activity('Copy data').output.rowsCopied",
+													"type": "Expression"
+												},
+												"type": "Int64"
+											},
+											"ROWREAD": {
+												"value": "@activity('Copy data').output.rowsRead",
+												"type": "Int64"
+											},
+											"SCHEMANAME": {
+												"value": "@item().SCHEMANAME",
+												"type": "String"
+											},
+											"TABLENAME": {
+												"value": {
+													"value": "@item().TABLENAME",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "AzureSqlDatabaseConn",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "Fail Logs",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "Copy data",
+											"dependencyConditions": [
+												"Failed"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[banking].[USP_LOGDETAILS_ONPREMISES]",
+										"storedProcedureParameters": {
+											"COPYDURATION": {
+												"value": "@activity('Copy data').output.copyDuration",
+												"type": "Int64"
+											},
+											"ERRORMESSAGE": {
+												"value": "@activity('Copy data').Error.message",
+												"type": "String"
+											},
+											"LOGTIME": {
+												"value": "@convertTimeZone(utcNow(),'UTC','Eastern Standard Time')",
+												"type": "DateTime"
+											},
+											"ROWCOPIED": {
+												"value": null,
+												"type": "Int64"
+											},
+											"ROWREAD": {
+												"value": null,
+												"type": "Int64"
+											},
+											"SCHEMANAME": {
+												"value": "@item().SCHEMANAME",
+												"type": "String"
+											},
+											"TABLENAME": {
+												"value": {
+													"value": "@item().TABLENAME",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "AzureSqlDatabaseConn",
+										"type": "LinkedServiceReference"
+									}
 								}
 							]
 						}

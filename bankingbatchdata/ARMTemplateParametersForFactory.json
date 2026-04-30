@@ -5,11 +5,14 @@
 		"factoryName": {
 			"value": "bankingbatchdata"
 		},
+		"AzureDataLakeStorage_accountKey": {
+			"value": ""
+		},
 		"AzureSqlDatabaseConn_password": {
 			"value": ""
 		},
-		"AzureDataLakeStorage_accountKey": {
-			"value": ""
+		"AzureDataLakeStorage_properties_typeProperties_url": {
+			"value": "https://project1demo.dfs.core.windows.net/"
 		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://keyvaultretailproject.vault.azure.net/"
@@ -22,9 +25,6 @@
 		},
 		"AzureSqlDatabaseConn_properties_typeProperties_userName": {
 			"value": "dnpserver"
-		},
-		"AzureDataLakeStorage_properties_typeProperties_url": {
-			"value": "https://project1demo.dfs.core.windows.net/"
 		}
 	}
 }

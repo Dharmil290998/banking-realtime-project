@@ -7,13 +7,17 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "bankingbatchdata"
 		},
+		"AzureDataLakeStorage_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage'"
+		},
 		"AzureSqlDatabaseConn_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AzureSqlDatabaseConn'"
 		},
-		"AzureDataLakeStorage_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage'"
+		"AzureDataLakeStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://project1demo.dfs.core.windows.net/"
 		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
@@ -30,49 +34,12 @@
 		"AzureSqlDatabaseConn_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "dnpserver"
-		},
-		"AzureDataLakeStorage_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://project1demo.dfs.core.windows.net/"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/On-Premises to ADLS')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "On-Premises to ADLS",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"policy": {
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Data Ingestion",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Data Ingestion')]"
-			]
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Data Ingestion')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -301,7 +268,10 @@
 										"storedProcedureName": "[[banking].[USP_LOGDETAILS_ONPREMISES]",
 										"storedProcedureParameters": {
 											"COPYDURATION": {
-												"value": "@activity('Copy data').output.copyDuration",
+												"value": {
+													"value": "@activity('Copy data').output.copyDuration",
+													"type": "Expression"
+												},
 												"type": "Int64"
 											},
 											"ERRORMESSAGE": {
@@ -309,7 +279,10 @@
 												"type": "String"
 											},
 											"LOGTIME": {
-												"value": "@convertTimeZone(utcNow(),'UTC','Eastern Standard Time')",
+												"value": {
+													"value": "@convertTimeZone(utcNow(),'UTC','Eastern Standard Time')",
+													"type": "Expression"
+												},
 												"type": "DateTime"
 											},
 											"ROWCOPIED": {
@@ -320,11 +293,17 @@
 												"type": "Int64"
 											},
 											"ROWREAD": {
-												"value": "@activity('Copy data').output.rowsRead",
+												"value": {
+													"value": "@activity('Copy data').output.rowsRead",
+													"type": "Expression"
+												},
 												"type": "Int64"
 											},
 											"SCHEMANAME": {
-												"value": "@item().SCHEMANAME",
+												"value": {
+													"value": "@item().SCHEMANAME",
+													"type": "Expression"
+												},
 												"type": "String"
 											},
 											"TABLENAME": {
@@ -364,15 +343,24 @@
 										"storedProcedureName": "[[banking].[USP_LOGDETAILS_ONPREMISES]",
 										"storedProcedureParameters": {
 											"COPYDURATION": {
-												"value": "@activity('Copy data').output.copyDuration",
+												"value": {
+													"value": "@activity('Copy data').output.copyDuration",
+													"type": "Expression"
+												},
 												"type": "Int64"
 											},
 											"ERRORMESSAGE": {
-												"value": "@activity('Copy data').Error.message",
+												"value": {
+													"value": "@activity('Copy data').Error.message",
+													"type": "Expression"
+												},
 												"type": "String"
 											},
 											"LOGTIME": {
-												"value": "@convertTimeZone(utcNow(),'UTC','Eastern Standard Time')",
+												"value": {
+													"value": "@convertTimeZone(utcNow(),'UTC','Eastern Standard Time')",
+													"type": "Expression"
+												},
 												"type": "DateTime"
 											},
 											"ROWCOPIED": {
@@ -384,7 +372,10 @@
 												"type": "Int64"
 											},
 											"SCHEMANAME": {
-												"value": "@item().SCHEMANAME",
+												"value": {
+													"value": "@item().SCHEMANAME",
+													"type": "Expression"
+												},
 												"type": "String"
 											},
 											"TABLENAME": {
@@ -418,39 +409,37 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureKeyVault')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/On-Premises to ADLS')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"annotations": [],
-				"type": "AzureKeyVault",
-				"typeProperties": {
-					"baseUrl": "[parameters('AzureKeyVault_properties_typeProperties_baseUrl')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabaseConn')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('AzureSqlDatabaseConn_properties_typeProperties_server')]",
-					"database": "[parameters('AzureSqlDatabaseConn_properties_typeProperties_database')]",
-					"encrypt": "optional",
-					"trustServerCertificate": false,
-					"authenticationType": "SQL",
-					"userName": "[parameters('AzureSqlDatabaseConn_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('AzureSqlDatabaseConn_password')]"
+				"activities": [
+					{
+						"name": "On-Premises to ADLS",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Data Ingestion",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
-				}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Data Ingestion')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
@@ -541,23 +530,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('AzureDataLakeStorage_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureDataLakeStorage_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/DelimitedText')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -599,6 +571,58 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureKeyVault')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('AzureKeyVault_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabaseConn')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('AzureSqlDatabaseConn_properties_typeProperties_server')]",
+					"database": "[parameters('AzureSqlDatabaseConn_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('AzureSqlDatabaseConn_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('AzureSqlDatabaseConn_password')]"
+					}
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }

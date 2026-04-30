@@ -7,13 +7,17 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "bankingbatchdata"
 		},
+		"AzureDataLakeStorage_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage'"
+		},
 		"AzureSqlDatabaseConn_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AzureSqlDatabaseConn'"
 		},
-		"AzureDataLakeStorage_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage'"
+		"AzureDataLakeStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://project1demo.dfs.core.windows.net/"
 		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
@@ -30,10 +34,6 @@
 		"AzureSqlDatabaseConn_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "dnpserver"
-		},
-		"AzureDataLakeStorage_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://project1demo.dfs.core.windows.net/"
 		},
 		"containerUri": {
 			"type": "string",
@@ -62,11 +62,14 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"AzureDataLakeStorage_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage_accountKey')]"
+					},
 					"AzureSqlDatabaseConn_password": {
 						"value": "[parameters('AzureSqlDatabaseConn_password')]"
 					},
-					"AzureDataLakeStorage_accountKey": {
-						"value": "[parameters('AzureDataLakeStorage_accountKey')]"
+					"AzureDataLakeStorage_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage_properties_typeProperties_url')]"
 					},
 					"AzureKeyVault_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault_properties_typeProperties_baseUrl')]"
@@ -79,9 +82,6 @@
 					},
 					"AzureSqlDatabaseConn_properties_typeProperties_userName": {
 						"value": "[parameters('AzureSqlDatabaseConn_properties_typeProperties_userName')]"
-					},
-					"AzureDataLakeStorage_properties_typeProperties_url": {
-						"value": "[parameters('AzureDataLakeStorage_properties_typeProperties_url')]"
 					}
 				}
 			},

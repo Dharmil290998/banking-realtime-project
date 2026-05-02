@@ -1,7 +1,7 @@
 ## 🏗️ Project Architecture
 
 <p align="center">
-  <img src="./project-architecture.png" alt="Banking Architecture" width="900"/>
+  <img src="https://github.com/Dharmil290998/banking-realtime-project/blob/main/project%20architecture.png" alt="Banking Architecture" width="900"/>
 </p>
 
 ---

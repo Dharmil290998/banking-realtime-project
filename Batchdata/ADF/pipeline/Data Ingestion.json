@@ -145,7 +145,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"folder_name": {
-											"value": "@item().FOLDERNAME",
+											"value": "@concat(\n    item().FOLDERNAME, '/',\n    formatDateTime(utcNow(), 'yyyy'), '/',\n    formatDateTime(utcNow(), 'MM'), '/',\n    formatDateTime(utcNow(), 'dd')\n)",
 											"type": "Expression"
 										},
 										"file_name": {
@@ -222,7 +222,10 @@
 								"storedProcedureName": "[banking].[USP_LOGDETAILS_ONPREMISES]",
 								"storedProcedureParameters": {
 									"COPYDURATION": {
-										"value": "@activity('Copy data').output.copyDuration",
+										"value": {
+											"value": "@activity('Copy data').output.copyDuration",
+											"type": "Expression"
+										},
 										"type": "Int64"
 									},
 									"ERRORMESSAGE": {
@@ -230,7 +233,10 @@
 										"type": "String"
 									},
 									"LOGTIME": {
-										"value": "@convertTimeZone(utcNow(),'UTC','Eastern Standard Time')",
+										"value": {
+											"value": "@convertTimeZone(utcNow(),'UTC','Eastern Standard Time')",
+											"type": "Expression"
+										},
 										"type": "DateTime"
 									},
 									"ROWCOPIED": {
@@ -241,11 +247,17 @@
 										"type": "Int64"
 									},
 									"ROWREAD": {
-										"value": "@activity('Copy data').output.rowsRead",
+										"value": {
+											"value": "@activity('Copy data').output.rowsRead",
+											"type": "Expression"
+										},
 										"type": "Int64"
 									},
 									"SCHEMANAME": {
-										"value": "@item().SCHEMANAME",
+										"value": {
+											"value": "@item().SCHEMANAME",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"TABLENAME": {
@@ -285,15 +297,24 @@
 								"storedProcedureName": "[banking].[USP_LOGDETAILS_ONPREMISES]",
 								"storedProcedureParameters": {
 									"COPYDURATION": {
-										"value": "@activity('Copy data').output.copyDuration",
+										"value": {
+											"value": "@activity('Copy data').output.copyDuration",
+											"type": "Expression"
+										},
 										"type": "Int64"
 									},
 									"ERRORMESSAGE": {
-										"value": "@activity('Copy data').Error.message",
+										"value": {
+											"value": "@activity('Copy data').Error.message",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"LOGTIME": {
-										"value": "@convertTimeZone(utcNow(),'UTC','Eastern Standard Time')",
+										"value": {
+											"value": "@convertTimeZone(utcNow(),'UTC','Eastern Standard Time')",
+											"type": "Expression"
+										},
 										"type": "DateTime"
 									},
 									"ROWCOPIED": {
@@ -305,7 +326,10 @@
 										"type": "Int64"
 									},
 									"SCHEMANAME": {
-										"value": "@item().SCHEMANAME",
+										"value": {
+											"value": "@item().SCHEMANAME",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"TABLENAME": {

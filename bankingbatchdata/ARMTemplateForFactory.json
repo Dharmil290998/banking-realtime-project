@@ -191,7 +191,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"folder_name": {
-													"value": "@item().FOLDERNAME",
+													"value": "@concat(\n    item().FOLDERNAME, '/',\n    formatDateTime(utcNow(), 'yyyy'), '/',\n    formatDateTime(utcNow(), 'MM'), '/',\n    formatDateTime(utcNow(), 'dd')\n)",
 													"type": "Expression"
 												},
 												"file_name": {
